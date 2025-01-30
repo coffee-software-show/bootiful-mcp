@@ -27,7 +27,6 @@ class McpHintsAutoConfiguration {
 
             for (var tr : innerClasses(McpSchema.class)) {
                 hints.reflection().registerType(tr, mcs);
-                System.out.println("adding " + tr.getName());
             }
         }
 
