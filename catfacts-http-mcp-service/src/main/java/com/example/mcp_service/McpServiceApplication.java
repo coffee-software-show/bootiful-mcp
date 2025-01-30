@@ -33,15 +33,6 @@ public class McpServiceApplication {
         SpringApplication.run(McpServiceApplication.class, args);
     }
 
-    @Bean
-    ApplicationRunner pidListenerApplicationRunner(@Value("file://${HOME}/Desktop/pid") File pid) {
-        return _ -> {
-            var ap = new ApplicationPid().toLong();
-            try (var out = new FileWriter(pid)) {
-                out.write(ap.toString());
-            }
-        };
-    }
 
     @Bean
     WebMvcSseServerTransport webMvcSseServerTransport(ObjectMapper objectMapper) {

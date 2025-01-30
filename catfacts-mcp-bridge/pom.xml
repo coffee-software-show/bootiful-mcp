@@ -12,7 +12,7 @@
     <artifactId>catfacts-mcp-bridge</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>catfacts-mcp-bridge</name>
-    <description> Demo project for Spring Boot</description>
+    <description>Demo project for Spring Boot</description>
     <url/>
     <licenses>
         <license/>
@@ -35,6 +35,15 @@
             <groupId>org.springframework.experimental</groupId>
             <artifactId>spring-ai-mcp</artifactId>
         </dependency>
+        <!--<dependency>
+            <groupId>org.springframework.experimental</groupId>
+            <artifactId>mcp-webmvc-sse-transport</artifactId>
+        </dependency>   -->
+        <dependency>
+            <groupId>org.springframework.experimental</groupId>
+            <artifactId>mcp-webflux-sse-transport</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
