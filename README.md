@@ -1,13 +1,11 @@
-# Bootiful MCP 
-
-
+# Bootiful MCP
  
 ## MCP, it's easy as ABC...
 
 demo flow
 
 - Claude desktop friendly stdio server (talking to https://catfacts.ninja/fact) (connects with what people know)
-- it's nice becuse you can use graalvm and distribute native binaries for people to have on their OSes. on windows, u could distribute self contained catfacts.exe binaries for people to add to their Claude Desktop .json config file. etc.
+- it's nice because you can use graalvm and distribute native binaries for people to have on their OSes. on windows, u could distribute self-contained `catfacts.exe` binaries for people to add to their Claude Desktop .json config file. etc.
 - but that means all the business logic is living on the client machine. what if there's fancy business logic living in a service somewhere? you can do that! MCP supports HTTP.
 - let's refactor the STDIO service to be an HTTP service. EZ.
 - but OOPS! Anthropic doesn’t support the protocol that they themselves created what do we do
