@@ -2,5 +2,5 @@
 
 rm -rf target
 
-./mvnw -DskipTests -Pnative native:compile 
+./mvnw -DskipTests  install 
 
