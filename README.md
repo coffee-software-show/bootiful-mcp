@@ -20,7 +20,7 @@ The first example, `catfacts-stdio-mcp-service`, is a simple service that can be
 
 ## Simple HTTP MCP Service 
 
-This next example, `catfacts-stdio-mcp-service`, is built using HTTP. 
+This next example, `catfacts-stdio-mcp-service`, is built using HTTP. You can inspect it using the inspector with `./inspect.sh` and then plugin `http://localhost:8080/sse` for the `URL`.
 
 The MCP protocol supports HTTP, but Claude Desktop itself does not. So, we'll need a bridge, to act as a client to our HTTP MCP service, and a service for the Claude Desktop client, adapting STDIO to HTTP. That's `catfacts-mcp-proxy`. It'll generate a native binary that can be registerd with Claude Desktop. To use it, you'll need to export an environment variable with a username and a password on your desktop environment. if you're connecting to the HTTP MCP service directly, you'll need to specify that by overriding the `catfacts.mcp.host` property.
 
