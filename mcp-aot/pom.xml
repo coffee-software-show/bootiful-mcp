@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>catfacts-http-mcp-service</artifactId>
+    <artifactId>mcp-aot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>catfacts-http-mcp-service</name>
+    <name>mcp-aot</name>
     <description>Demo project for Spring Boot</description>
     <url/>
     <licenses>
@@ -34,11 +34,6 @@
         <dependency>
             <groupId>org.springframework.experimental</groupId>
             <artifactId>spring-ai-mcp</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.example</groupId>
-            <artifactId>mcp-aot</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -67,18 +62,7 @@
         </dependencies>
     </dependencyManagement>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.graalvm.buildtools</groupId>
-                <artifactId>native-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+   
     <repositories>
         <repository>
             <id>spring-milestones</id>
