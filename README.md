@@ -18,8 +18,17 @@ demo flow
 
 
 
+## TODO
+- Spring Cloud Gateway with Auth, Redis Rate Limiting
+- Configure Auth in the `WebClient` in the bridge
 
-
+## Done 
+- Redis Docker file
+- STDIO MCP service  
+- HTTP MCP service  
+- Bridge MCP service 
+- GraalVM
+- Virtual Threads
 
 
 
