@@ -78,12 +78,10 @@ class CatFactClient {
     }
 
     Fact randomFact() {
-        var random = this.http.get().uri("/fact").retrieve().body(Fact.class);
-        System.out.println("got [" + random + ']');
-        return random;
+        var fact = this.http.get().uri("/fact").retrieve().body(Fact.class);
+        return fact;
     }
 }
-
 
 record Fact(@JsonProperty("max_length") int length, String fact) {
 }

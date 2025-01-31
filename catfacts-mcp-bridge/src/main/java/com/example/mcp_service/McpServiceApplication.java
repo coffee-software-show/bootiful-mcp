@@ -25,7 +25,7 @@ import java.util.Map;
 
 /**
  * this code acts as a bridge between the HTTP MCP service and the STDIO MCP client
- * 
+ *
  * @author Josh Long
  */
 @SpringBootApplication
@@ -40,11 +40,13 @@ public class McpServiceApplication {
     StdioServerTransport stdioServerTransport() {
         return new StdioServerTransport();
     }
-    
+
     @Bean
     WebFluxSseClientTransport sseClientTransport(WebClient.Builder webClient, ObjectMapper objectMapper) {
-        return new WebFluxSseClientTransport(
-                webClient.baseUrl("http://localhost:3001"), objectMapper);
+        var authorizedWebClientBuilder = webClient
+                .baseUrl("http://localhost:3001")
+                .defaultHeaders(h -> h.setBasicAuth("jlong", "pw"));
+        return new WebFluxSseClientTransport(authorizedWebClientBuilder, objectMapper);
     }
 
     @Bean
