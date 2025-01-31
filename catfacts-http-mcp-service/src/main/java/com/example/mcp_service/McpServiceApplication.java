@@ -4,26 +4,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.ai.mcp.server.McpServer;
 import org.springframework.ai.mcp.server.McpSyncServer;
-import org.springframework.ai.mcp.server.transport.StdioServerTransport;
 import org.springframework.ai.mcp.server.transport.WebMvcSseServerTransport;
 import org.springframework.ai.mcp.spec.McpSchema;
 import org.springframework.ai.mcp.spec.ServerMcpTransport;
 import org.springframework.ai.mcp.spring.ToolHelper;
 import org.springframework.ai.model.function.FunctionCallback;
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.system.ApplicationPid;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.function.ServerResponse;
-
-import java.io.File;
-import java.io.FileWriter;
 
 @SpringBootApplication
 @RegisterReflectionForBinding(Fact.class)
@@ -43,7 +36,7 @@ public class McpServiceApplication {
     RouterFunction<ServerResponse> routerFunction(WebMvcSseServerTransport transport) {
         return transport.getRouterFunction();
     }
-    
+
     @Bean
     McpSyncServer mcpServer(
             ServerMcpTransport transport,
@@ -81,11 +74,11 @@ class CatFactClient {
     private final RestClient http;
 
     CatFactClient(RestClient.Builder client) {
-        this.http = client .baseUrl("https://catfact.ninja").build();
+        this.http = client.baseUrl("https://catfact.ninja").build();
     }
 
     Fact randomFact() {
-        var random = this.http.get() .uri("/fact").retrieve().body(Fact.class);
+        var random = this.http.get().uri("/fact").retrieve().body(Fact.class);
         System.out.println("got [" + random + ']');
         return random;
     }
