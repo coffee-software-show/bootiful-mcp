@@ -23,7 +23,6 @@ public class ServiceApplication {
 @Configuration
 class FileToolsConfiguration {
 
-
     @Bean
     ToolCallbackProvider weatherTools(FileTools fileTools) {
         return MethodToolCallbackProvider.builder().toolObjects(fileTools).build();
