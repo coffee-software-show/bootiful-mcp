@@ -30,58 +30,62 @@ public class LsApplication {
     public static void main(String[] args) {
         SpringApplication.run(LsApplication.class, args);
     }
+}
 
 
-    // 1.
-    @Configuration
+// 1.
+@Configuration
+@Profile("one")
+class LocalToolsAutoConfiguration {
+
+    @Component
     @Profile("one")
-    static class LocalToolsAutoConfiguration {
+    static class FileToolsWithComponentModel {
 
-        @Component
-        static class FileToolsWithComponentModel {
-
-            @Tool(description = "returns all the files a folder, /Users/jlong/Desktop/user-context")
-            String[] listFileNames() {
-                var folder = new File("/Users/jlong/Desktop/user-context");
+        @Tool(description = "returns all the files a folder, /Users/jlong/Desktop/user-context")
+        String[] localListFile () {
+            var folder = new File("/Users/jlong/Desktop/user-context");
 //                System.out.println("   > returning the files in [" + folder.getAbsolutePath() + "]");
-                return folder.list();
-            }
-
-        }
-
-        @Bean
-        NamedMcpClientRunner localToolsRunner(ChatClient.Builder builder, FileToolsWithComponentModel tools) {
-            return new NamedMcpClientRunner(builder.defaultTools(tools));
+            return folder.list();
         }
 
     }
 
-    // 2.
-    @Configuration
-    @Profile("two")
-    static class ThirdPartyManuallyConfiguredMcpServerConfiguration {
-
-        @Bean
-        McpSyncClient mcpClient(@Value("${HOME}/Desktop/user-context") File dbPath) {
-            var stdioParams = ServerParameters.builder("npx")
-                    .args("-y", "@modelcontextprotocol/server-filesystem", dbPath.getAbsolutePath())
-                    .build();
-            var mcpClient = McpClient//
-                    .sync(new StdioClientTransport(stdioParams))//
-                    .requestTimeout(Duration.ofSeconds(10))//
-                    .build();
-            mcpClient.initialize();
-            return mcpClient;
-        }
-
-        @Bean
-        NamedMcpClientRunner thirdPartyManuallyConfiguredMcpServer(McpSyncClient mcpClient, ChatClient.Builder builder) {
-            var mcpToolCallbackProvider = new SyncMcpToolCallbackProvider(mcpClient);
-            return new NamedMcpClientRunner(builder.defaultTools(mcpToolCallbackProvider));
-        }
-
+    @Bean
+    NamedMcpClientRunner localToolsRunner(ChatClient.Builder builder, FileToolsWithComponentModel tools) {
+        return new NamedMcpClientRunner(builder.defaultTools(tools));
     }
 
+}
+
+// 2.
+@Configuration
+@Profile("two")
+class ThirdPartyManuallyConfiguredMcpServerConfiguration {
+
+    @Bean
+    McpSyncClient mcpClient(@Value("${HOME}/Desktop/user-context") File dbPath) {
+        var stdioParams = ServerParameters.builder("npx")
+                .args("-y", "@modelcontextprotocol/server-filesystem", dbPath.getAbsolutePath())
+                .build();
+        var mcpClient = McpClient//
+                .sync(new StdioClientTransport(stdioParams))//
+                .requestTimeout(Duration.ofSeconds(10))//
+                .build();
+        mcpClient.initialize();
+        return mcpClient;
+    }
+
+    @Bean
+    NamedMcpClientRunner thirdPartyManuallyConfiguredMcpServer(McpSyncClient mcpClient, ChatClient.Builder builder) {
+        var mcpToolCallbackProvider = new SyncMcpToolCallbackProvider(mcpClient);
+        return new NamedMcpClientRunner(builder.defaultTools(mcpToolCallbackProvider));
+    }
+
+}
+
+@Configuration
+class ThirdPartyAutoConfiguredMcpServerConfiguration {
 
     // 3.
     @Bean
@@ -89,28 +93,33 @@ public class LsApplication {
     NamedMcpClientRunner thirdPartyAutoConfiguredMcpServer(ChatClient.Builder builder, ToolCallbackProvider provider) {
         return new NamedMcpClientRunner(builder.defaultTools(provider));
     }
+}
 
-    // 4.
-    @Configuration
+
+// 4.
+@Configuration
 //    @Profile("four")
-    static class BootifulAutoConfiguredMcpServerConfiguration {
+class BootifulAutoConfiguredMcpServerConfiguration {
 
-        @Bean
-        McpSyncClient mcpClient() {
-            var mcpClient = McpClient
-                    .sync(new HttpClientSseClientTransport("http://localhost:8080"))
-                    .build();
-            mcpClient.initialize();
-            return mcpClient;
-        }
+    @Bean
+    McpSyncClient mcpClient() {
+        var mcpClient = McpClient
+                .sync(new HttpClientSseClientTransport("http://localhost:8080"))
+                .build();
+        mcpClient.initialize();
+        return mcpClient;
+    }
 
-        @Bean
-        NamedMcpClientRunner bootifulAutoConfiguredMcpServer( McpSyncClient mcpSyncClient,ChatClient.Builder builder) {
-            var mcpToolCallbackProvider = new SyncMcpToolCallbackProvider(mcpSyncClient);
-            return new NamedMcpClientRunner(builder.defaultTools(mcpToolCallbackProvider));
-        }
+    @Bean
+    NamedMcpClientRunner bootifulAutoConfiguredMcpServer(McpSyncClient mcpSyncClient, ChatClient.Builder builder) {
+        var mcpToolCallbackProvider = new SyncMcpToolCallbackProvider(mcpSyncClient);
+        return new NamedMcpClientRunner(builder.defaultTools(mcpToolCallbackProvider));
     }
 }
+
+record ChineseFile(String fileName, String word) {
+}
+
 
 class NamedMcpClientRunner implements ApplicationRunner, BeanNameAware {
 
@@ -134,7 +143,4 @@ class NamedMcpClientRunner implements ApplicationRunner, BeanNameAware {
         var entity = this.builder.build().prompt(prompt).call().entity(ChineseFile.class);
         System.out.println(this.beanName.get() + ": " + entity);
     }
-}
-
-record ChineseFile(String fileName, String word) {
 }

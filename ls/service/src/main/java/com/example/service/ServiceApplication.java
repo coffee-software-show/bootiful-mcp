@@ -6,7 +6,6 @@ import org.springframework.ai.tool.method.MethodToolCallbackProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -18,23 +17,18 @@ public class ServiceApplication {
         SpringApplication.run(ServiceApplication.class, args);
     }
 
-}
-
-@Configuration
-class FileToolsConfiguration {
-
     @Bean
-    ToolCallbackProvider weatherTools(FileTools fileTools) {
+    ToolCallbackProvider weatherToolsToolCallbackProvider(FileTools fileTools) {
         return MethodToolCallbackProvider.builder().toolObjects(fileTools).build();
     }
+}
 
-    @Component
-    static class FileTools {
+@Component
+class FileTools {
 
-        @Tool(description = "returns all the files a folder, /Users/jlong/Desktop/user-context")
-        String[] listFileNames() {
-            System.out.println("listing the file names...");
-            return new File("/Users/jlong/Desktop/user-context").list();
-        }
+    @Tool(description = "returns all the files a folder, /Users/jlong/Desktop/user-context")
+    String[] listFileNamesRemotely () {
+        System.out.println("listing the file names...");
+        return new File("/Users/jlong/Desktop/user-context").list();
     }
 }
